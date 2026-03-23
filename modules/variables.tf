@@ -4,3 +4,9 @@ variable "function_name" {
   type        = string
   default     = "example_lambda_function"
 }
+
+variable "api_gw_name" {
+  description = "Name of the API Gateway"
+  type        = string
+  default     = "weather-check-api-gw"
+}

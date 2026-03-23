@@ -1,9 +1,9 @@
 import json
 
 def lambda_handler(event, context):
-    body = "Hello from Lambda"
+    body = "Hello from Lambda B. The 2nd function."
     statuscode = 200
-    print("This lambda ran", event)
+    print("lambda B ran", event)
     return {
         "statusCode": statuscode,
         "body": json.dumps(body),
