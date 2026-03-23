@@ -39,7 +39,8 @@ resource "aws_api_gateway_resource" "resources" {
 resource "aws_api_gateway_method" "methods" {
   for_each      = local.methods
   rest_api_id   = aws_api_gateway_rest_api.api_gw.id
-  resource_id   = aws_api_gateway_resource.resources[each.value.resource].id
+  # Root resource handled differently
+  resource_id   = each.value.resource == "root_resource"? aws_api_gateway_rest_api.api_gw.root_resource_id : aws_api_gateway_resource.resources[each.value.resource].id
   http_method   = each.value.method
   authorization = "NONE"
 }
@@ -47,7 +48,8 @@ resource "aws_api_gateway_method" "methods" {
 resource "aws_api_gateway_integration" "lambda_integrations" {
   for_each                  = local.functions
   rest_api_id               = aws_api_gateway_rest_api.api_gw.id
-  resource_id               = aws_api_gateway_resource.resources[each.value.resource].id
+  # Root resource handled differently
+  resource_id               = each.value.resource == "root_resource"? aws_api_gateway_rest_api.api_gw.root_resource_id : aws_api_gateway_resource.resources[each.value.resource].id
   http_method               = aws_api_gateway_method.methods[each.value.end_point_name].http_method
   integration_http_method   = "POST"
   type                      = "AWS_PROXY"
